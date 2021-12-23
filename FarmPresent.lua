@@ -1,6 +1,6 @@
 script_name('FarmPresent by Dashok.')
 script_properties("FarmPresent")
-script_version('1.0')
+script_version('1.1')
 
 require "lib.moonloader"
 
@@ -41,34 +41,34 @@ function main()
 end
 
 function update()
-    local fpath = os.getenv('TEMP') .. '\\testing_version.json' -- куда будет качаться наш файлик для сравнения версии
-    downloadUrlToFile('https://raw.githubusercontent.com/Dashok1234/Lua-SAMP-RDS/main/update.json', fpath, function(id, status, p1, p2) -- ссылку на ваш гитхаб где есть строчки которые я ввёл в теме или любой другой сайт
+    local fpath = os.getenv('TEMP') .. '\\testing_version.json' -- ГЄГіГ¤Г  ГЎГіГ¤ГҐГІ ГЄГ Г·Г ГІГјГ±Гї Г­Г Гё ГґГ Г©Г«ГЁГЄ Г¤Г«Гї Г±Г°Г ГўГ­ГҐГ­ГЁГї ГўГҐГ°Г±ГЁГЁ
+    downloadUrlToFile('https://raw.githubusercontent.com/Dashok1234/Lua-SAMP-RDS/main/update.json', fpath, function(id, status, p1, p2) -- Г±Г±Г»Г«ГЄГі Г­Г  ГўГ Гё ГЈГЁГІГµГ ГЎ ГЈГ¤ГҐ ГҐГ±ГІГј Г±ГІГ°Г®Г·ГЄГЁ ГЄГ®ГІГ®Г°Г»ГҐ Гї ГўГўВёГ« Гў ГІГҐГ¬ГҐ ГЁГ«ГЁ Г«ГѕГЎГ®Г© Г¤Г°ГіГЈГ®Г© Г±Г Г©ГІ
       if status == dlstatus.STATUS_ENDDOWNLOADDATA then
-      local f = io.open(fpath, 'r') -- открывает файл
+      local f = io.open(fpath, 'r') -- Г®ГІГЄГ°Г»ГўГ ГҐГІ ГґГ Г©Г«
       if f then
-        local info = decodeJson(f:read('*a')) -- читает
+        local info = decodeJson(f:read('*a')) -- Г·ГЁГІГ ГҐГІ
         updatelink = info.updateurl
         if info and info.latest then
-          version = tonumber(info.latest) -- переводит версию в число
-          if version > tonumber(thisScript().version) then -- если версия больше чем версия установленная то...
-            lua_thread.create(goupdate) -- апдейт
-          else -- если меньше, то
-            update = false -- не даём обновиться 
-            sampAddChatMessage(tag .. 'У вас и так последняя версия! Обновление отменено')
+          version = tonumber(info.latest) -- ГЇГҐГ°ГҐГўГ®Г¤ГЁГІ ГўГҐГ°Г±ГЁГѕ Гў Г·ГЁГ±Г«Г®
+          if version > tonumber(thisScript().version) then -- ГҐГ±Г«ГЁ ГўГҐГ°Г±ГЁГї ГЎГ®Г«ГјГёГҐ Г·ГҐГ¬ ГўГҐГ°Г±ГЁГї ГіГ±ГІГ Г­Г®ГўГ«ГҐГ­Г­Г Гї ГІГ®...
+            lua_thread.create(goupdate) -- Г ГЇГ¤ГҐГ©ГІ
+          else -- ГҐГ±Г«ГЁ Г¬ГҐГ­ГјГёГҐ, ГІГ®
+            update = false -- Г­ГҐ Г¤Г ВёГ¬ Г®ГЎГ­Г®ГўГЁГІГјГ±Гї 
+            sampAddChatMessage(tag .. 'Г“ ГўГ Г± ГЁ ГІГ ГЄ ГЇГ®Г±Г«ГҐГ¤Г­ГїГї ГўГҐГ°Г±ГЁГї! ГЋГЎГ­Г®ГўГ«ГҐГ­ГЁГҐ Г®ГІГ¬ГҐГ­ГҐГ­Г®')
           end
         end
       end
     end
   end)
   end
-  --скачивание актуальной версии
+  --Г±ГЄГ Г·ГЁГўГ Г­ГЁГҐ Г ГЄГІГіГ Г«ГјГ­Г®Г© ГўГҐГ°Г±ГЁГЁ
   function goupdate()
-  sampAddChatMessage(tag .. 'Обнаружено обновление. AutoReload может конфликтовать. Обновляюсь...')
-  sampAddChatMessage(tag .. 'Текущая версия: '..thisScript().version..". Новая версия: "..version)
+  sampAddChatMessage(tag .. 'ГЋГЎГ­Г Г°ГіГ¦ГҐГ­Г® Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГҐ. AutoReload Г¬Г®Г¦ГҐГІ ГЄГ®Г­ГґГ«ГЁГЄГІГ®ГўГ ГІГј. ГЋГЎГ­Г®ГўГ«ГїГѕГ±Гј...')
+  sampAddChatMessage(tag .. 'Г’ГҐГЄГіГ№Г Гї ГўГҐГ°Г±ГЁГї: '..thisScript().version..". ГЌГ®ГўГ Гї ГўГҐГ°Г±ГЁГї: "..version)
   wait(300)
-  downloadUrlToFile(updatelink, thisScript().path, function(id3, status1, p13, p23) -- качает ваш файлик с latest version
+  downloadUrlToFile(updatelink, thisScript().path, function(id3, status1, p13, p23) -- ГЄГ Г·Г ГҐГІ ГўГ Гё ГґГ Г©Г«ГЁГЄ Г± latest version
     if status1 == dlstatus.STATUS_ENDDOWNLOADDATA then
-    sampAddChatMessage(tag .. 'Обновление завершено!')
+    sampAddChatMessage(tag .. 'ГЋГЎГ­Г®ГўГ«ГҐГ­ГЁГҐ Г§Г ГўГҐГ°ГёГҐГ­Г®!')
     thisScript():reload()
   end
   end)
